@@ -7,6 +7,12 @@ rng(2)
 codeDir1 = '/gscratch/retina/vyomr/GitRepos/VLR-STRF/';  % YOUR CODE DIR HERE
 codeDir2 = '/Users/riekelabbackup/Desktop/Vyom/gitrepos/VLR-STRF';  % YOUR CODE DIR HERE
 
+dataPath = '/Volumes/Vyom MEA/analysis/wn_subsample/mea_data.mat';
+% Load Y and X
+mea_data = load(dataPath);
+Y = mea_data.Y';
+X = mea_data.X;
+
 try cd(codeDir1);
 catch; cd(codeDir2);
 end
@@ -20,18 +26,13 @@ nkt = 61;  % length of temporal filter (in bins)
 dtbin = 1/120; % lenth of a single time bin
 tmax = nkt*dtbin; % length of temporal RF
 
-% Load Y and X
-mea_data = load('mea_data.mat');
-Y = mea_data.Y';
-X = mea_data.X;
-
 % build prior for spatial RF
 spatPrior = build_vlrPrior('ALD',xdims);
 
 % build prior for temporal RF
 minlen_t = dtbin*2;   % minimum temporal lengthscale in normalised units
 tempPrior = build_vlrPrior('TRD',nkt,minlen_t,tmax);
-
+kSTA = simpleRevcorr(X,Y,nkt);
 % update initial hyperparameters from STA
 [tempPrior, spatPrior] = initialiseHprs_vlrPriors(kSTA,tempPrior,spatPrior);
 
