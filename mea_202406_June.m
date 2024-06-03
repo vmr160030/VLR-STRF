@@ -4,7 +4,7 @@ clear;
 rng(2)
 
 % set paths
-codeDir1 = '/Users/riekelabbackup/Desktop/Vyom/gitrepos/VLR-STRF';  % YOUR CODE DIR HERE
+codeDir1 = '/gscratch/retina/vyomr/GitRepos/VLR-STRF/';  % YOUR CODE DIR HERE
 codeDir2 = '/Users/riekelabbackup/Desktop/Vyom/gitrepos/VLR-STRF';  % YOUR CODE DIR HERE
 
 try cd(codeDir1);
@@ -21,7 +21,7 @@ dtbin = 1/120; % lenth of a single time bin
 tmax = nkt*dtbin; % length of temporal RF
 
 % Load Y and X
-mea_data = load('mea_data.mat');
+mea_data = load('/gscratch/retina/vyomr/mea_data_analysis/protocol_analysis/WN/subsample/mea_data.mat');
 Y = mea_data.Y;
 X = mea_data.X;
 
@@ -45,7 +45,7 @@ m = build_vlrModel(Y,X,rnk,spatPrior,tempPrior,opts);
 % Set number of iterations per step of coordinate ascent
 m.opts.maxiter.spatStep = 10;
 m.opts.maxiter.tempStep = 10;
-m.opts.maxiter.EM = 20;  % total number of EM iterations
+m.opts.maxiter.EM = 100;  % total number of EM iterations
 
 % Run variational EM
 fprintf('\nRunning variational EM...\n-------------------------\n\n');
@@ -62,3 +62,6 @@ thprs_hat = m.tempPrior.hprs;  % extract fitted temporal hyperparams
 kMAP = mutHat*muxHat';
 mut = mutHat*(mutHat\kt);  % representation of true components in temporal basis
 mux = muxHat*(muxHat\kx);  % representation of true components in spatial basis
+
+% Save the results
+save('mea_202406_June.mat','kMAP','mut','mux','xhprs_hat','thprs_hat','m');
