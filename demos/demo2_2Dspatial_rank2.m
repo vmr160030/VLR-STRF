@@ -5,8 +5,9 @@ clear;
 rng(2)
 
 % set paths
-codeDir1 = '~/Documents/git/VLR-STRF'; % YOUR CODE DIR HERE
-codeDir2 = '~/Dropbox/Docs/git/VLR-STRF';  % YOUR CODE DIR HERE
+codeDir1 = '/Users/riekelabbackup/Desktop/Vyom/gitrepos/VLR-STRF';  % YOUR CODE DIR HERE
+codeDir2 = '/Users/riekelabbackup/Desktop/Vyom/gitrepos/VLR-STRF';  % YOUR CODE DIR HERE
+
 try cd(codeDir1);
 catch; cd(codeDir2);
 end
