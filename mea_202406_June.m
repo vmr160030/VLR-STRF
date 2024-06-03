@@ -21,8 +21,8 @@ dtbin = 1/120; % lenth of a single time bin
 tmax = nkt*dtbin; % length of temporal RF
 
 % Load Y and X
-mea_data = load('/gscratch/retina/vyomr/mea_data_analysis/protocol_analysis/WN/subsample/mea_data.mat');
-Y = mea_data.Y;
+mea_data = load('mea_data.mat');
+Y = mea_data.Y';
 X = mea_data.X;
 
 % build prior for spatial RF
@@ -32,8 +32,10 @@ spatPrior = build_vlrPrior('ALD',xdims);
 minlen_t = dtbin*2;   % minimum temporal lengthscale in normalised units
 tempPrior = build_vlrPrior('TRD',nkt,minlen_t,tmax);
 
-%% initialise model structure
+% update initial hyperparameters from STA
+[tempPrior, spatPrior] = initialiseHprs_vlrPriors(kSTA,tempPrior,spatPrior);
 
+%% initialise model structure
 rnk = 2;            % receptive field rank
 opts = [];          % use default options
 
