@@ -7,12 +7,13 @@ rng(2)
 codeDir1 = '/gscratch/retina/vyomr/GitRepos/VLR-STRF/';  % YOUR CODE DIR HERE
 codeDir2 = '/Users/riekelabbackup/Desktop/Vyom/gitrepos/VLR-STRF';  % YOUR CODE DIR HERE
 
-dataPath = '/Volumes/Vyom MEA/analysis/wn_subsample/mea_data.mat';
+dataPath = 'mea_data.mat';
 % Load Y and X
 mea_data = load(dataPath);
 Y = mea_data.Y';
-X = mea_data.X;
-
+X = double(mea_data.X);
+kSTA = double(mea_data.sta);
+%%
 try cd(codeDir1);
 catch; cd(codeDir2);
 end
@@ -20,7 +21,8 @@ set_paths;
 
 % Data params
 Nsamps = 19182; % number of time samples to in stimulus
-xdims = [95 152]; % spatial dimensions of stimulus. Only do red channel for now
+%xdims = [95 152]; % spatial dimensions of stimulus. Only do red channel for now
+xdims = [20 20];
 nkx = prod(xdims);  % total number of spatial RF coeffs
 nkt = 61;  % length of temporal filter (in bins)
 dtbin = 1/120; % lenth of a single time bin
@@ -32,7 +34,7 @@ spatPrior = build_vlrPrior('ALD',xdims);
 % build prior for temporal RF
 minlen_t = dtbin*2;   % minimum temporal lengthscale in normalised units
 tempPrior = build_vlrPrior('TRD',nkt,minlen_t,tmax);
-kSTA = simpleRevcorr(X,Y,nkt);
+%kSTA = simpleRevcorr(X,Y,nkt);
 % update initial hyperparameters from STA
 [tempPrior, spatPrior] = initialiseHprs_vlrPriors(kSTA,tempPrior,spatPrior);
 

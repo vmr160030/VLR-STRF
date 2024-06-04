@@ -28,7 +28,7 @@ tt = (-tmax(1):dtbin:-dtbin)'; % time bins for filter
 % compute spike-triggered average (STA)
 kSTA = simpleRevcorr(X,Y,nkt);
 kSTA = kSTA/var(X(:))/Nsamps; % scaled so norm is upper bound on true norm
-
+%%
 % Compute SVD of STA
 [tsta,~,xsta] = svd(kSTA);
 xsta = xsta(:,1:2)*(xsta(:,1:2)\kx); % reconstruction of spatial components
