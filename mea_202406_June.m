@@ -50,7 +50,7 @@ m = build_vlrModel(Y,X,rnk,spatPrior,tempPrior,opts);
 % Set number of iterations per step of coordinate ascent
 m.opts.maxiter.spatStep = 10;
 m.opts.maxiter.tempStep = 10;
-m.opts.maxiter.EM = 100;  % total number of EM iterations
+m.opts.maxiter.EM = 20;  % total number of EM iterations
 
 % Run variational EM
 fprintf('\nRunning variational EM...\n-------------------------\n\n');
@@ -65,8 +65,8 @@ thprs_hat = m.tempPrior.hprs;  % extract fitted temporal hyperparams
 [mutHat,muxHat]  = getSTRF_vlrModel(m);
 
 kMAP = mutHat*muxHat';
-mut = mutHat*(mutHat\kt);  % representation of true components in temporal basis
-mux = muxHat*(muxHat\kx);  % representation of true components in spatial basis
+% mut = mutHat*(mutHat\kt);  % representation of true components in temporal basis
+% mux = muxHat*(muxHat\kx);  % representation of true components in spatial basis
 
 % Save the results
-save('mea_202406_June.mat','kMAP','mut','mux','xhprs_hat','thprs_hat','m');
+save('mea_202406_June.mat','kMAP','mutHat','muxHat','xhprs_hat','thprs_hat','m');
